@@ -2,7 +2,7 @@ name: jenkins
 version: 3.5
 summary: Jenkins automation server
 description: Continuous integration and delivery server with a vast ecosystem of plugins
-confinement: devmode
+confinement: strict
 apps:
     jenkins:
         command: java -DJENKINS_HOME="$SNAP_USER_DATA" -Djava.awt.headless=true -jar $SNAP/war/jenkins.war
