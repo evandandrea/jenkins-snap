@@ -1,0 +1,29 @@
+name: jenkins
+version: 3.5
+summary: Jenkins automation server
+description: Continuous integration and delivery server with a vast ecosystem of plugins
+confinement: devmode
+apps:
+    jenkins:
+        command: java -DJENKINS_HOME="$SNAP_USER_DATA" -Djava.awt.headless=true -jar $SNAP/war/jenkins.war
+        plugs: [network, network-bind]
+parts:
+    jenkins:
+        plugin: jenkins
+        source: git://github.com/jenkinsci/jenkins
+        source-tag: jenkins-2.7
+        stage-packages:
+            # Jenkins wants fonts.
+            - fonts-dejavu-core
+        snap:
+            - war/jenkins.war
+            - usr/lib/jvm/default-java/bin
+            - usr/lib/jvm/default-java/lib
+            - usr/lib/jvm/default-java/jre/bin
+            - usr/lib/jvm/default-java/jre/lib
+            - etc/java-*
+            # Jenkins wants fonts.
+            - etc/fonts/fonts.conf
+            - usr/share/fonts
+
+# vim: set ai et sts=4 tabstop=4 sw=4:
