@@ -1,0 +1,18 @@
+#!/bin/sh -e
+
+if [ -z "$SNAP_DATA" ]; then
+    echo "SNAP_DATA not set."
+    exit 1
+fi
+
+if [ ! -w "$SNAP_DATA" ]; then
+    echo "Please re-run as root."
+    exit 1
+fi
+
+if [ -t 0 ]; then
+    echo "usage: cat config.xml | $0"
+    exit 1
+else
+    cat - > $SNAP_DATA/config.xml
+fi

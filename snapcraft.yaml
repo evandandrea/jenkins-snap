@@ -5,9 +5,11 @@ description: Continuous integration and delivery server with a vast ecosystem of
 confinement: strict
 apps:
     jenkins:
-        command: java -DJENKINS_HOME="$SNAP_USER_DATA" -Djava.awt.headless=true -jar $SNAP/war/jenkins.war
+        command: java -DJENKINS_HOME="$SNAP_DATA" -Djava.awt.headless=true -jar $SNAP/war/jenkins.war
         plugs: [network, network-bind]
         daemon: simple
+    config:
+        command: jenkins-config
 parts:
     jenkins:
         plugin: jenkins
@@ -26,5 +28,9 @@ parts:
             # Jenkins wants fonts.
             - etc/fonts/fonts.conf
             - usr/share/fonts
+    config:
+        plugin: copy
+        files:
+            jenkins-config: bin/jenkins-config
 
 # vim: set ai et sts=4 tabstop=4 sw=4:
