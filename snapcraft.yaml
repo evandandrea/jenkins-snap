@@ -1,5 +1,5 @@
 name: jenkins
-version: 3.5
+version: 2.7
 summary: Jenkins automation server
 description: Continuous integration and delivery server with a vast ecosystem of plugins
 confinement: strict
