@@ -28,6 +28,7 @@ parts:
             # Jenkins wants fonts.
             - etc/fonts/fonts.conf
             - usr/share/fonts
+            - usr/lib/*/libfontconfig*
     config:
         plugin: copy
         files:
