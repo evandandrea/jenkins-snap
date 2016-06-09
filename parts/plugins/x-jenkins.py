@@ -3,7 +3,7 @@ import logging
 
 import snapcraft
 import snapcraft.common
-import snapcraft.plugins.jdk
+import snapcraft.plugins.maven
 
 
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ fontconfig = """<?xml version="1.0"?>
 </fontconfig>
 """
 
-class JenkinsPlugin(snapcraft.plugins.jdk.JdkPlugin):
+class JenkinsPlugin(snapcraft.plugins.maven.MavenPlugin):
 
     def __init__(self, name, options, project):
         super().__init__(name, options, project)
@@ -32,9 +32,14 @@ class JenkinsPlugin(snapcraft.plugins.jdk.JdkPlugin):
         return super().env(root) + env
 
     def build(self):
-        super().build()
+        snapcraft.BasePlugin.build(self)
 
         mvn_cmd = ['mvn', 'install', '-pl', 'war', '-am', '-DskipTests']
+        if self._use_proxy():
+            settings_path = os.path.join(self.partdir, 'm2', 'settings.xml')
+            snapcraft.plugins.maven._create_settings(settings_path)
+            mvn_cmd += ['-s', settings_path]
+
         self.run(mvn_cmd)
 
         src = os.path.join(self.builddir, 'war', 'target', 'jenkins.war')
