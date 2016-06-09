@@ -13,7 +13,7 @@ apps:
 parts:
     jenkins:
         plugin: jenkins
-        source: git://github.com/jenkinsci/jenkins
+        source: https://github.com/jenkinsci/jenkins
         source-tag: jenkins-2.7
         stage-packages:
             # Jenkins wants fonts.
