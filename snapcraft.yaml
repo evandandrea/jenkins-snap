@@ -15,6 +15,7 @@ parts:
         plugin: jenkins
         source: https://github.com/jenkinsci/jenkins
         source-tag: jenkins-2.7
+        source-type: git
         stage-packages:
             # Jenkins wants fonts.
             - fonts-dejavu-core
