@@ -32,8 +32,12 @@ class JenkinsPlugin(snapcraft.plugins.maven.MavenPlugin):
         return super().env(root) + env
 
     def build(self):
+        # Calling the superclass build would spawn mvn, but we still want to
+        # clean the build directory.
         snapcraft.BasePlugin.build(self)
 
+        # Test.
+        [print('{}: {}'.format(k,v)) for k,v in os.environ.items()]
         mvn_cmd = ['mvn', 'install', '-pl', 'war', '-am', '-DskipTests']
         if self._use_proxy():
             settings_path = os.path.join(self.partdir, 'm2', 'settings.xml')
