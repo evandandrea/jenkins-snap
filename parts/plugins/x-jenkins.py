@@ -30,9 +30,10 @@ class JenkinsPlugin(snapcraft.plugins.maven.MavenPlugin):
                     ('SNAPCRAFT_LOCAL_SOURCES', 'http_proxy')])
 
     def env(self, root):
-        # Jenkins wants fonts.
+        # Jenkins wants fonts and git.
         env = ['XDG_DATA_HOME=%s/usr/share' % root,
-               'FONTCONFIG_PATH=%s/etc/fonts' % root]
+               'FONTCONFIG_PATH=%s/etc/fonts' % root,
+               'GIT_EXEC_PATH=%s/usr/lib/git-core' % root]
         return super().env(root) + env
 
     def build(self):
