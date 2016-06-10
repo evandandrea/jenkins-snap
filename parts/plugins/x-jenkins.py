@@ -25,6 +25,10 @@ class JenkinsPlugin(snapcraft.plugins.maven.MavenPlugin):
         super().__init__(name, options, project)
         self.build_packages.append('maven')
 
+    def _use_proxy(self):
+        return all([k in os.environ for k in
+                    ('SNAPCRAFT_LOCAL_SOURCES', 'http_proxy')])
+
     def env(self, root):
         # Jenkins wants fonts.
         env = ['XDG_DATA_HOME=%s/usr/share' % root,
