@@ -40,8 +40,6 @@ class JenkinsPlugin(snapcraft.plugins.maven.MavenPlugin):
         # Work on Launchpad's build system, which currently only supports
         # Internet access from the pull phase.
 
-        # Test.
-        [print('{}: {}'.format(k,v)) for k,v in os.environ.items()]
         mvn_cmd = ['mvn', 'dependency:resolve']
         if self._use_proxy():
             settings_path = os.path.join(self.partdir, 'm2', 'settings.xml')
