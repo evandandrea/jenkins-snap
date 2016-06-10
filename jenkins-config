@@ -10,7 +10,8 @@ if [ -z "$SNAP_DATA" ]; then
 fi
 
 if [ ! -w "$SNAP_DATA" ]; then
-    err "Please re-run as root."
+    err "Please re-run as root:"
+    err "\`cat config.xml | sudo /snap/bin/jenkins.config\`"
     exit 1
 fi
 
