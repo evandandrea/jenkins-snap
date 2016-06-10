@@ -31,19 +31,27 @@ class JenkinsPlugin(snapcraft.plugins.maven.MavenPlugin):
                'FONTCONFIG_PATH=%s/etc/fonts' % root]
         return super().env(root) + env
 
-    def build(self):
-        # Calling the superclass build would spawn mvn, but we still want to
-        # clean the build directory.
-        snapcraft.BasePlugin.build(self)
+    def pull(self):
+        super().pull()
+        # Work on Launchpad's build system, which currently only supports
+        # Internet access from the pull phase.
 
         # Test.
         [print('{}: {}'.format(k,v)) for k,v in os.environ.items()]
-        mvn_cmd = ['mvn', 'install', '-pl', 'war', '-am', '-DskipTests']
+        mvn_cmd = ['mvn', 'dependency:resolve']
         if self._use_proxy():
             settings_path = os.path.join(self.partdir, 'm2', 'settings.xml')
             snapcraft.plugins.maven._create_settings(settings_path)
             mvn_cmd += ['-s', settings_path]
 
+        self.run(mvn_cmd)
+
+    def build(self):
+        # Calling the superclass build would spawn mvn, but we still want to
+        # clean the build directory.
+        snapcraft.BasePlugin.build(self)
+
+        mvn_cmd = ['mvn', '-o', 'install', '-pl', 'war', '-am', '-DskipTests']
         self.run(mvn_cmd)
 
         src = os.path.join(self.builddir, 'war', 'target', 'jenkins.war')
