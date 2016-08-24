@@ -11,12 +11,23 @@ apps:
     config:
         command: jenkins-config
 parts:
+    maven:
+        plugin: copy
+        source: http://apache.osuosl.org/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+        files:
+            bin: bin
+            conf: conf
+            lib: lib
+            boot: boot
     jenkins:
         plugin: jenkins
         source: https://github.com/jenkinsci/jenkins
         source-tag: jenkins-2.8
         source-type: git
+        after:
+            - maven
         stage-packages:
+            - default-jdk
             # Jenkins wants fonts.
             - fonts-dejavu-core
         snap:
